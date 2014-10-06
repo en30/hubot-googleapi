@@ -1,7 +1,7 @@
 {
   "name": "hubot-googleapi",
   "version": "0.0.0",
-  "description": "A hubot script for google APIs",
+  "description": "A hubot script to use google APIs",
   "main": "index.coffee",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

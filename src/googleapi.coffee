@@ -1,5 +1,5 @@
 # Description:
-#   A hubot script for google APIs
+#   A hubot script to use google APIs
 #
 # Dependencies:
 #   "googleapis": "^1.0.14"
@@ -33,7 +33,7 @@ AUTH_PATH = "/auth/googleapi"
 client = new OAuth2(
   GOOGLE_API_CLIENT_ID,
   GOOGLE_API_CLIENT_SECRET,
-  "#{HUBOT_URL}/auth/googleapi/callback"
+  "#{HUBOT_URL}#{AUTH_PATH}/callback"
 )
 google.options(auth: client)
 

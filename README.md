@@ -1,7 +1,7 @@
 hubot-googleapi
 ================
 
-A hubot script for using google APIs
+A hubot script to use google APIs
 
 ## Installation
 Run
