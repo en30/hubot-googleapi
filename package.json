@@ -1,0 +1,28 @@
+{
+  "name": "hubot-googleapi",
+  "version": "0.0.0",
+  "description": "A hubot script for google APIs",
+  "main": "index.coffee",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/en30/hubot-googleapi"
+  },
+  "keywords": [
+    "hubot",
+    "google",
+    "api",
+    "google apis"
+  ],
+  "author": "en30 <en30.git@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/en30/hubot-googleapi/issues"
+  },
+  "homepage": "https://github.com/en30/hubot-googleapi",
+  "dependencies": {
+    "googleapis": "^1.0.14"
+  }
+}
