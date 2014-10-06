@@ -42,18 +42,22 @@ hubot> Authorize at http://your-hubot.example.com/auth/googleapi
 
 ```coffee
 # in your scripts
+# https://developers.google.com/analytics/devguides/config/mgmt/v3/mgmtReference/management/profiles/list
 robot.emit "googleapi:request",
   service: "analytics"
   version: "v3"
   endpoint: "management.profiles.list"
-  params:
+  params:                               # parameters to pass to API
     accountId: '~all'
     webPropertyId: '~all'
-  callback: (err, data)->
+  callback: (err, data)->               # node-style callback
     return console.log(err) if err
     console.log data.items.map((item)->
       "#{item.name} - #{item.websiteUrl}"
     ).join("\n")
 ```
 
+`service`,`version`,`endpoint`,`params`,`callback` are required.
+
+You can find `service` name on [google/google-api-nodejs-client/apis](https://github.com/google/google-api-nodejs-client/tree/master/apis).
 `endpoint` corresponds to method names of [google/google-api-nodejs-client](https://github.com/google/google-api-nodejs-client).
