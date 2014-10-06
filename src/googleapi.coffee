@@ -11,6 +11,7 @@
 #   GOOGLE_API_SCOPES
 #
 # Commands:
+#   hubot googleapi auth - Returns authorization URL
 #
 # URLS:
 #   /auth/googleapi
@@ -25,19 +26,21 @@ google = require("googleapis")
 {HUBOT_URL, HEROKU_URL,
 GOOGLE_API_CLIENT_ID, GOOGLE_API_CLIENT_SECRET, GOOGLE_API_SCOPES} = process.env
 
-hubot_url = HUBOT_URL || HEROKU_URL || "http://#{require("os").hostname()}"
-hubot_url = hubot_url[..-2] if hubot_url[hubot_url.length - 1] == "/"
+HUBOT_URL = HUBOT_URL || HEROKU_URL || "http://#{require("os").hostname()}"
+HUBOT_URL = HUBOT_URL[..-2] if HUBOT_URL[HUBOT_URL.length - 1] == "/"
+AUTH_PATH = "/auth/googleapi"
+
 client = new OAuth2(
   GOOGLE_API_CLIENT_ID,
   GOOGLE_API_CLIENT_SECRET,
-  "#{hubot_url}/auth/googleapi/callback"
+  "#{HUBOT_URL}/auth/googleapi/callback"
 )
 google.options(auth: client)
 
 updateCredential = (robot, callback)->
   credential = robot.brain.get("credential")
   unless credential
-    return callback(new Error("Needs authorization. Authorize at #{hubot_url}/auth/googleapi"))
+    return callback(new Error("Needs authorization. Authorize at #{HUBOT_URL}#{AUTH_PATH}"))
 
   client.setCredentials?(
     access_token: credential.access_token,
@@ -53,7 +56,10 @@ updateCredential = (robot, callback)->
     callback(null)
 
 module.exports = (robot)->
-  robot.router.get "/auth/googleapi", (req, res)->
+  robot.respond /googleapi auth(orize)?$/, (msg)->
+    msg.send "Authorize at #{HUBOT_URL}#{AUTH_PATH}"
+
+  robot.router.get AUTH_PATH, (req, res)->
     res.redirect client.generateAuthUrl(
       access_type: "offline",
       # undocumented but necessary for getting a refresh_token
@@ -62,7 +68,7 @@ module.exports = (robot)->
         "https://www.googleapis.com/auth/#{e}"
     )
 
-  robot.router.get "/auth/googleapi/callback", (req, res)->
+  robot.router.get "#{AUTH_PATH}/callback", (req, res)->
     client.getToken req.query.code, (err, credential)->
       return res.send(err.message) if err
       robot.brain.set "credential", credential

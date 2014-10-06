@@ -28,11 +28,20 @@ To get CLIENT ID and CLIENT SECRET,
 3. Go to `APIs & auth > Credentials`, and create new Client ID. AUTHORIZED REDIRECT URI should be `YOUR_HUBOT_URL/auth/googleapi/callback`.
 
 ## Usage
-`hubot-googleapi` listens on `googleapi:request` events.
 
-So, in your scripts you can use like an example below.
+### Authorization
+Authorize through OAuth2
+
+```
+en30> hubot googleapi auth
+hubot> Authorize at http://your-hubot.example.com/auth/googleapi
+```
+
+### Event
+`hubot-googleapi` listens on `googleapi:request` events, and you can use Google APIs by emitting them.
 
 ```coffee
+# in your scripts
 robot.emit "googleapi:request",
   service: "analytics"
   version: "v3"
