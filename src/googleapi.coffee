@@ -42,7 +42,7 @@ updateCredential = (robot, callback)->
   unless credential
     return callback(new Error("Needs authorization. Authorize at #{HUBOT_URL}#{AUTH_PATH}"))
 
-  client.setCredentials?(
+  client.setCredentials(
     access_token: credential.access_token,
     refresh_token: credential.refresh_token
   )
@@ -78,5 +78,5 @@ module.exports = (robot)->
     version = "v#{version}" if version[0] != "v"
     updateCredential robot, (err)->
       return callback(err) if err
-      client = google[service](version)
-      endpoint.split(".").reduce(((a, e)-> a[e]), client)(params, callback)
+      serviceClient = google[service](version)
+      endpoint.split(".").reduce(((a, e)-> a[e]), serviceClient)(params, callback)
