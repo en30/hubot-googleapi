@@ -34,7 +34,7 @@ client = new OAuth2(
 )
 google.options(auth: client)
 
-getCredential = (robot, callback)->
+updateCredential = (robot, callback)->
   credential = robot.brain.get("credential")
   unless credential
     return callback(new Error("Needs authorization. Authorize at #{hubot_url}/auth/googleapi"))
@@ -48,9 +48,9 @@ getCredential = (robot, callback)->
     client.refreshAccessToken (err, credential)->
       return callback(err) if err
       robot.brain.set "credential", credential
-      callback(null, credential)
+      callback(null)
   else
-    callback(null, credential)
+    callback(null)
 
 module.exports = (robot)->
   robot.router.get "/auth/googleapi", (req, res)->
@@ -70,6 +70,7 @@ module.exports = (robot)->
 
   robot.on "googleapi:request", ({service, version, endpoint, params, callback})->
     version = "v#{version}" if version[0] != "v"
-    getCredential robot, (err, credential)->
+    updateCredential robot, (err)->
+      return callback(err) if err
       client = google[service](version)
       endpoint.split(".").reduce(((a, e)-> a[e]), client)(params, callback)
