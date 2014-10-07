@@ -26,6 +26,7 @@ To get CLIENT ID and CLIENT SECRET,
 1. Create a project at [API console](https://code.google.com/apis/console/).
 2. Enable APIs you want to use at `API & auth > APIs`.
 3. Go to `APIs & auth > Credentials`, and create new Client ID. AUTHORIZED REDIRECT URI should be `YOUR_HUBOT_URL/auth/googleapi/callback`.
+4. Go to `Conesent screen`, select EMAIL ADRESS and fill PRODUCT NAME. These are required to authorize.
 
 ## Usage
 
