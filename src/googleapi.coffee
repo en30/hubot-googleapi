@@ -65,7 +65,7 @@ module.exports = (robot)->
       # undocumented but necessary for getting a refresh_token
       approval_prompt: "force",
       scope: GOOGLE_API_SCOPES.split(",").map (e)->
-        "https://www.googleapis.com/auth/#{e}"
+        "https://www.googleapis.com/auth/#{e.trim()}"
     )
 
   robot.router.get "#{AUTH_PATH}/callback", (req, res)->
