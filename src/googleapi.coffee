@@ -29,6 +29,7 @@ GOOGLE_API_CLIENT_ID, GOOGLE_API_CLIENT_SECRET, GOOGLE_API_SCOPES} = process.env
 HUBOT_URL = HUBOT_URL || HEROKU_URL || "http://#{require("os").hostname()}"
 HUBOT_URL = HUBOT_URL[..-2] if HUBOT_URL[HUBOT_URL.length - 1] == "/"
 AUTH_PATH = "/auth/googleapi"
+BRAIN_KEY = "googleapi:credential"
 
 client = new OAuth2(
   GOOGLE_API_CLIENT_ID,
@@ -38,7 +39,7 @@ client = new OAuth2(
 google.options(auth: client)
 
 updateCredential = (robot, callback)->
-  credential = robot.brain.get("credential")
+  credential = robot.brain.get(BRAIN_KEY)
   unless credential
     return callback(new Error("Needs authorization. Authorize at #{HUBOT_URL}#{AUTH_PATH}"))
 
@@ -50,7 +51,7 @@ updateCredential = (robot, callback)->
   if Date.now() > credential.expiry_date
     client.refreshAccessToken (err, credential)->
       return callback(err) if err
-      robot.brain.set "credential", credential
+      robot.brain.set BRAIN_KEY, credential
       callback(null)
   else
     callback(null)
@@ -71,7 +72,7 @@ module.exports = (robot)->
   robot.router.get "#{AUTH_PATH}/callback", (req, res)->
     client.getToken req.query.code, (err, credential)->
       return res.send(err.message) if err
-      robot.brain.set "credential", credential
+      robot.brain.set BRAIN_KEY, credential
       res.send("Authorization has succeeded!")
 
   robot.on "googleapi:request", ({service, version, endpoint, params, callback})->
