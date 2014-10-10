@@ -43,6 +43,7 @@ updateCredential = (robot, callback)->
   unless credential
     return callback(new Error("Needs authorization. Authorize at #{HUBOT_URL}#{AUTH_PATH}"))
 
+  client.setCredentials(credential)
   if Date.now() > credential.expiry_date
     client.refreshAccessToken (err, credential)->
       return callback(err) if err
@@ -50,7 +51,6 @@ updateCredential = (robot, callback)->
       client.setCredentials(credential)
       callback(null)
   else
-    client.setCredentials(credential)
     callback(null)
 
 module.exports = (robot)->
