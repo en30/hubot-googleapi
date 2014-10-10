@@ -43,17 +43,14 @@ updateCredential = (robot, callback)->
   unless credential
     return callback(new Error("Needs authorization. Authorize at #{HUBOT_URL}#{AUTH_PATH}"))
 
-  client.setCredentials(
-    access_token: credential.access_token,
-    refresh_token: credential.refresh_token
-  )
-
   if Date.now() > credential.expiry_date
     client.refreshAccessToken (err, credential)->
       return callback(err) if err
       robot.brain.set BRAIN_KEY, credential
+      client.setCredentials(credential)
       callback(null)
   else
+    client.setCredentials(credential)
     callback(null)
 
 module.exports = (robot)->
