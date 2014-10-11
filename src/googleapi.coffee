@@ -48,7 +48,6 @@ updateCredential = (robot, callback)->
     client.refreshAccessToken (err, credential)->
       return callback(err) if err
       robot.brain.set BRAIN_KEY, credential
-      client.setCredentials(credential)
       callback(null)
   else
     callback(null)
