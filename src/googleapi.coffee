@@ -30,6 +30,7 @@ HUBOT_URL = HUBOT_URL || HEROKU_URL || "http://#{require("os").hostname()}"
 HUBOT_URL = HUBOT_URL[..-2] if HUBOT_URL[HUBOT_URL.length - 1] == "/"
 AUTH_PATH = "/auth/googleapi"
 BRAIN_KEY = "googleapi:credential"
+SAFETY_MARGIN = 5 * 60 * 1000 # 5 minutes in milliseconds
 
 client = new OAuth2(
   GOOGLE_API_CLIENT_ID,
@@ -44,7 +45,7 @@ updateCredential = (robot, callback)->
     return callback(new Error("Needs authorization. Authorize at #{HUBOT_URL}#{AUTH_PATH}"))
 
   client.setCredentials(credential)
-  if Date.now() > credential.expiry_date
+  if Date.now() > credential.expiry_date - SAFETY_MARGIN
     client.refreshAccessToken (err, credential)->
       return callback(err) if err
       robot.brain.set BRAIN_KEY, credential
