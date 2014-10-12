@@ -1,6 +1,6 @@
 {
   "name": "hubot-googleapi",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A hubot script to use google APIs",
   "main": "index.coffee",
   "scripts": {
