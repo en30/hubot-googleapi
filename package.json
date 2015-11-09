@@ -24,6 +24,6 @@
   },
   "homepage": "https://github.com/en30/hubot-googleapi",
   "dependencies": {
-    "googleapis": "^1.0.14"
+    "googleapis": "^2.1.6"
   }
 }
